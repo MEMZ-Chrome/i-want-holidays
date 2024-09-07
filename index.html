@@ -19,7 +19,7 @@
   }
   .countdown-container {
     text-align: center;
-    background: rgba(255, 255, 255, 0.8);
+    background-color: rgba(255, 255, 255, 0.5);
     padding: 10px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
@@ -30,14 +30,14 @@
     position: relative;
     overflow: hidden;
   }
-  .countdown-container::before {
+  .countdown-container::after {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(255, 255, 255, 0.8);
+    background: inherit;
     border-radius: 8px;
     z-index: -1;
     filter: blur(8px);
@@ -67,6 +67,29 @@
     top: 0;
     background-color: rgba(255, 215, 0, 0.8);
     z-index: 1000;
+    width: 100%; /* Full width for the first row */
+  }
+  #saturdayCountdown .countdown-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    height: 100px; /* Adjusted height for Saturday countdown */
+  }
+  #specialMessage {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+  }
+  #specialMessage .countdown-container {
+    width: 80%;
+  }
+  访问次数 {
+    font-size: 16px;
+    color: #666;
+    position: relative;
+    z-index: 1;
   }
 </style>
 </head>
@@ -78,6 +101,10 @@
   <div class="countdown-text">就是今天</div>
 </div>
 <div id="upcomingHolidays"></div>
+<div id="specialMessage" class="countdown-container">
+  <div class="countdown-text">Made with ❤️ by 37</div>
+  <div class="访问次数" id="visitCount"><br>已累计盼望放假 0 次</div>
+</div>
 <div class="past-holidays" id="pastHolidays"></div>
 
 <script>
@@ -86,9 +113,11 @@ const currentYear = now.getFullYear();
 var holidays = {
   '元旦': new Date('2024-01-01T00:00:00'),
   '春节': new Date('2024-02-10T00:00:00'),
+  '寒假': new Date('2024-01-12T00:00:00'),
   '清明节': new Date('2024-04-04T00:00:00'),
   '劳动节': new Date('2024-05-01T00:00:00'),
   '端午节': new Date('2024-06-10T00:00:00'),
+  '暑假': new Date('2024-07-14T00:00:00'),
   '中秋节': new Date('2024-09-15T00:00:00'),
   '国庆节': new Date('2024-10-01T00:00:00')
 };
@@ -132,6 +161,13 @@ function updateSaturdayCountdown() {
   }
 }
 
+function updateVisitCount() {
+  var visitCount = parseInt(document.cookie.replace(/(?:.*; )?visits=/, ''));
+  if (isNaN(visitCount)) visitCount = 0;
+  document.getElementById('visitCount').textContent = '已累计盼望放假 ' + (visitCount + 1) +' 次';
+  document.cookie = 'visits=' + (visitCount + 1) + '; path=/';
+}
+
 var upcomingDiv = document.getElementById('upcomingHolidays');
 for (var holiday in holidays) {
   var elementId = holiday.toLowerCase().replace(/\s+/g, '') + 'Countdown';
@@ -146,6 +182,7 @@ for (var holiday in holidays) {
 }
 
 updateCountdown(holidays);
+updateVisitCount();
 setInterval(function() {
   updateCountdown(holidays);
   updateSaturdayCountdown();
