@@ -9,7 +9,7 @@
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-image: url('https://imgse.com/i/pSVq0bT');
+    background-image: url('https://s11.ax1x.com/2023/01/08/pSVq0bT.jpg');
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
@@ -27,21 +27,26 @@
     display: inline-block;
     width: calc(50% - 10px);
     box-sizing: border-box;
-    filter: blur(2px);
+    position: relative;
+    overflow: hidden;
   }
-  .countdown-title {
-    font-size: 20px;
-    color: #333;
-    margin-bottom: 5px;
+  .countdown-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 8px;
+    z-index: -1;
+    filter: blur(8px);
   }
-  .countdown {
-    font-size: 40px;
-    color: #ff6347;
-    margin-bottom: 5px;
-  }
+  .countdown-title,
+  .countdown,
   .countdown-text {
-    font-size: 16px;
-    color: #666;
+    position: relative;
+    z-index: 1;
   }
   #saturdayCountdown {
     position: sticky;
